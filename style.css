@@ -1,0 +1,12 @@
+* {
+  font-family: 'Righteous', sans-serif;
+  /* outline: 1px solid #ff0000; */
+}
+
+.title {
+  font-family: 'Pacifico', cursive;
+}
+
+.form {
+  border-block: 2px dotted #000;
+}
