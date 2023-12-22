@@ -3,6 +3,13 @@ var link = document.querySelector("#siteURL");
 
 var urlList = [];
 
+if (localStorage.getItem("urlList") == null) {
+  urlList = [];
+} else {
+  urlList = JSON.parse(localStorage.getItem("urlList"));
+  displayURL(urlList);
+}
+
 function addURL() {
   var site = {
     name: siteName.value,
@@ -27,6 +34,7 @@ function displayURL() {
   </tr>`;
     document.querySelector("#table").innerHTML = cartona;
   }
+  localStorage.setItem("urlList", JSON.stringify(urlList));
 }
 
 function clearForm() {
@@ -36,5 +44,6 @@ function clearForm() {
 
 function deleteURL(index) {
   urlList.splice(index, 1);
-  displayURL(urlList )
+  localStorage.setItem("urlList", JSON.stringify(urlList));
+  displayURL(urlList);
 }
