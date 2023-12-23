@@ -11,14 +11,19 @@ if (localStorage.getItem("urlList") == null) {
 }
 
 function addURL() {
-  var site = {
-    name: siteName.value,
-    url: link.value,
-  };
-
-  urlList.push(site);
-  displayURL();
-  clearForm();
+  if (validateURL == true) {
+    var site = {
+      name: siteName.value,
+      url: link.value,
+    };
+  
+    urlList.push(site);
+    displayURL();
+    clearForm();
+    localStorage.setItem("urlList", JSON.stringify(urlList));
+  } else {
+    alert("enter a valid link")
+  }
 }
 
 function displayURL() {
@@ -34,7 +39,7 @@ function displayURL() {
   </tr>`;
     document.querySelector("#table").innerHTML = cartona;
   }
-  localStorage.setItem("urlList", JSON.stringify(urlList));
+
 }
 
 function clearForm() {
@@ -46,4 +51,13 @@ function deleteURL(index) {
   urlList.splice(index, 1);
   localStorage.setItem("urlList", JSON.stringify(urlList));
   displayURL(urlList);
+}
+
+function validateURL() {
+  var regex = /^(https?:\/\/)?(w{3}\.)?\w+\.\w{2,}\/?(:\d{2,5})?(\/\w+)*$/;
+  if (regex.test(link.value == true)) {
+    return true;
+  } else {
+    return false;
+  }
 }
