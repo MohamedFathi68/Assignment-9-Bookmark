@@ -1,7 +1,9 @@
-var siteName = document.querySelector("#siteName");
-var link = document.querySelector("#siteURL");
+let siteName = document.querySelector("#siteName");
+let siteURL = document.querySelector("#siteURL");
 
-var urlList = [];
+let urlList = [];
+
+//get data from local storage
 
 if (localStorage.getItem("urlList") == null) {
   urlList = [];
@@ -10,42 +12,50 @@ if (localStorage.getItem("urlList") == null) {
   displayURL(urlList);
 }
 
+// add url links
+
 function addURL() {
-  if (validateURL == true) {
-    var site = {
-      name: siteName.value,
-      url: link.value,
+  let alertMessage = document.querySelector(".alert-msg");
+  if (urlValidate() == true) {
+    let urlLink = {
+      siteName: siteName.value,
+      siteURL: siteURL.value,
     };
-  
-    urlList.push(site);
-    displayURL();
-    clearForm();
-    localStorage.setItem("urlList", JSON.stringify(urlList));
+    urlList.push(urlLink);
+    displayURL(); //display function
+    resetURL(); //clear inputs function
+    localStorage.setItem("urlList", JSON.stringify(urlList)); //add link to local storage
+    alertMessage.setAttribute("class", "text-danger m-5 d-none alert-msg");
   } else {
-    alert("enter a valid link")
+    alertMessage.setAttribute("class", "text-danger m-5 d-inline alert-msg");
   }
 }
+
+//display links in the table
 
 function displayURL() {
-  var cartona = ``;
-  for (var i = 0; i < urlList.length; i++) {
+  let cartona = ``; //HTML container
+  for (let i = 0; i < urlList.length; i++) {
     cartona += `<tr>
-    <td>${i + 1}</td>
-    <td>${urlList[i].name}</td>
-    <td><a href="http://${
-      urlList[i].url
-    }" class="btn btn-outline-warning" target="_blank">Visit</a></td>
-    <td><button onclick="deleteURL(${i})" class="btn btn-outline-danger">Delete</button></td>
-  </tr>`;
-    document.querySelector("#table").innerHTML = cartona;
+        <td>${i + 1}</td>
+        <td>${urlList[i].siteName}</td>
+          <td><a href="${
+            urlList[i].siteURL
+          }" class="btn btn-outline-warning" target="_blank">Visit</a></td>
+        <td><button onclick="deleteURL(${i})" class="btn btn-outline-danger">Delete</button></td>
+        </tr>`;
   }
-
+  document.querySelector("#table").innerHTML = cartona;
 }
 
-function clearForm() {
+// clear form inputs
+
+function resetURL() {
   siteName.value = "";
-  link.value = "";
+  siteURL.value = "";
 }
+
+// delete link from the table
 
 function deleteURL(index) {
   urlList.splice(index, 1);
@@ -53,11 +63,7 @@ function deleteURL(index) {
   displayURL(urlList);
 }
 
-function validateURL() {
-  var regex = /^(https?:\/\/)?(w{3}\.)?\w+\.\w{2,}\/?(:\d{2,5})?(\/\w+)*$/;
-  if (regex.test(link.value == true)) {
-    return true;
-  } else {
-    return false;
-  }
+function urlValidate() {
+  const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/;
+  return urlRegex.test(siteURL.value);
 }
